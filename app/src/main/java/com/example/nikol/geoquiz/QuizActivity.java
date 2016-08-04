@@ -1,9 +1,13 @@
 package com.example.nikol.geoquiz;
 
+import android.content.pm.ActivityInfo;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,7 +16,11 @@ public class QuizActivity extends AppCompatActivity {
     private Button mTrueButton;
     private Button mFalseButton;
     private Button mNextButton;
+    private ImageButton mNextImageButton;
+    private ImageButton mPrevImageButton;
     private TextView mQuestionTextView;
+    private static final String TAG = "QuizActivity";
+    private static final String KEY_INDEX ="index";
 
     private Question[] mQuestionBank = new Question[]{
             new Question(R.string.question_oceans, true),
@@ -27,8 +35,12 @@ public class QuizActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate(Bundle) called");
         setContentView(R.layout.activity_quiz);
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
+        if(savedInstanceState != null){
+            mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
+        }
         updateQuestion();
         mTrueButton = (Button) findViewById(R.id.true_button);
         mTrueButton.setOnClickListener(new View.OnClickListener(){
@@ -46,18 +58,98 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
 
-        mNextButton = (Button) findViewById(R.id.next_button);
-        mNextButton.setOnClickListener(new View.OnClickListener(){
+        int orientation=this.getResources().getConfiguration().orientation;
+        if (orientation == 2){
+            mNextButton = (Button) findViewById(R.id.next_button);
+            mNextButton.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    setNextCurrentIndex();
+                    updateQuestion();
+                }
+            });
+        }else {
+            mNextImageButton = (ImageButton) findViewById(R.id.next_button);
+            mNextImageButton.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    setNextCurrentIndex();
+                    updateQuestion();
+                }
+            });
+
+            mPrevImageButton = (ImageButton) findViewById(R.id.prev_button);
+            mPrevImageButton.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    setPrevCurrentIndex();
+                    updateQuestion();
+                }
+            });
+        }
+
+        mQuestionTextView.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
-                if(mQuestionBank.length - 1 == mCurrentIndex)
-                {mCurrentIndex=0;}
-                else
-                { mCurrentIndex++;}
+                setNextCurrentIndex();
                 updateQuestion();
             }
         });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop() called");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy() called");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause() called");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume() called");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart() called");
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        Log.i(TAG, "onSaveInstanceState");
+        savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
+    }
+
+    private void setNextCurrentIndex() {
+        if(mQuestionBank.length - 1 == mCurrentIndex)
+        {mCurrentIndex=0;}
+        else
+        { mCurrentIndex++;}
+    }
+
+    private void setPrevCurrentIndex() {
+        if(0 == mCurrentIndex)
+        {mCurrentIndex= mQuestionBank.length - 1;}
+        else
+        { mCurrentIndex--;}
     }
 
     private void updateQuestion() {
@@ -67,7 +159,7 @@ public class QuizActivity extends AppCompatActivity {
 
     private void checkAnswer(boolean userPressedTrue){
         boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
-        int messageResId = 0;
+        int messageResId;
         if(userPressedTrue == answerIsTrue){
             messageResId = R.string.correct_toast;
         }else{
