@@ -53,4 +53,7 @@ public class CheatActivity extends AppCompatActivity {
         i.putExtra(EXTRA_ANSWER_IS_TRUE, answerIsTrue);
         return i;
     }
+    public static boolean wasAnswerShown(Intent result) {
+        return result.getBooleanExtra(EXTRA_ANSWER_SHOWN, false);
+    }
 }
