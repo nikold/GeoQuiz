@@ -1,7 +1,5 @@
 package com.example.nikol.geoquiz;
 
-import android.content.pm.ActivityInfo;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,11 +11,6 @@ import android.widget.Toast;
 
 public class QuizActivity extends AppCompatActivity {
 
-    private Button mTrueButton;
-    private Button mFalseButton;
-    private Button mNextButton;
-    private ImageButton mNextImageButton;
-    private ImageButton mPrevImageButton;
     private TextView mQuestionTextView;
     private static final String TAG = "QuizActivity";
     private static final String KEY_INDEX ="index";
@@ -42,7 +35,8 @@ public class QuizActivity extends AppCompatActivity {
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
         }
         updateQuestion();
-        mTrueButton = (Button) findViewById(R.id.true_button);
+        Button mTrueButton = (Button) findViewById(R.id.true_button);
+        assert mTrueButton != null;
         mTrueButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -50,7 +44,8 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
 
-        mFalseButton = (Button) findViewById(R.id.false_button);
+        Button mFalseButton = (Button) findViewById(R.id.false_button);
+        assert mFalseButton != null;
         mFalseButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -60,7 +55,8 @@ public class QuizActivity extends AppCompatActivity {
 
         int orientation=this.getResources().getConfiguration().orientation;
         if (orientation == 2){
-            mNextButton = (Button) findViewById(R.id.next_button);
+            Button mNextButton = (Button) findViewById(R.id.next_button);
+            assert mNextButton != null;
             mNextButton.setOnClickListener(new View.OnClickListener(){
 
                 @Override
@@ -70,7 +66,8 @@ public class QuizActivity extends AppCompatActivity {
                 }
             });
         }else {
-            mNextImageButton = (ImageButton) findViewById(R.id.next_button);
+            ImageButton mNextImageButton = (ImageButton) findViewById(R.id.next_button);
+            assert mNextImageButton != null;
             mNextImageButton.setOnClickListener(new View.OnClickListener(){
 
                 @Override
@@ -80,7 +77,8 @@ public class QuizActivity extends AppCompatActivity {
                 }
             });
 
-            mPrevImageButton = (ImageButton) findViewById(R.id.prev_button);
+            ImageButton mPrevImageButton = (ImageButton) findViewById(R.id.prev_button);
+            assert mPrevImageButton != null;
             mPrevImageButton.setOnClickListener(new View.OnClickListener(){
 
                 @Override
