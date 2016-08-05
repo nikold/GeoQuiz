@@ -1,5 +1,6 @@
 package com.example.nikol.geoquiz;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +25,7 @@ public class QuizActivity extends AppCompatActivity {
     };
 
     private int mCurrentIndex = 0;
+    private int REQUEST_CODE_CHEAT = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,19 @@ public class QuizActivity extends AppCompatActivity {
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
         }
         updateQuestion();
+
+        Button mCheatButton = (Button)findViewById(R.id.cheat_button);
+        mCheatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean answerIsTrue = mQuestionBank[mCurrentIndex].
+                        isAnswerTrue();
+                Intent i = CheatActivity.newIntent(QuizActivity.this,
+                        answerIsTrue);
+                startActivityForResult(i, REQUEST_CODE_CHEAT);
+            }
+        });
+
         Button mTrueButton = (Button) findViewById(R.id.true_button);
         assert mTrueButton != null;
         mTrueButton.setOnClickListener(new View.OnClickListener(){
