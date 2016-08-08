@@ -43,6 +43,19 @@ public class QuizActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate(Bundle) called");
         setContentView(R.layout.activity_quiz);
+
+        Button mTestButton = (Button) findViewById(R.id.test_button);
+        mTestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String a = "test";
+                String b = "test";
+                //a = "qwert";
+                String result = String.format("%b ",a == b).toString();
+                Toast.makeText(getApplicationContext(),result,Toast.LENGTH_SHORT).show();
+            }
+        });
+
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
         if(savedInstanceState != null){
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
