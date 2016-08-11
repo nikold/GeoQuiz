@@ -11,6 +11,8 @@ import android.view.ViewAnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 public class CheatActivity extends AppCompatActivity {
 
     public static final String EXTRA_ANSWER_IS_TRUE =
@@ -49,7 +51,7 @@ public class CheatActivity extends AppCompatActivity {
                 int cx = mShowAnswer.getWidth() / 2;
                 int cy = mShowAnswer.getHeight() / 2;
                 float radius = mShowAnswer.getWidth();
-                Animator anim = null;
+                Animator anim;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                     anim = ViewAnimationUtils.createCircularReveal(mShowAnswer, cx, cy, radius, 0);
 
@@ -69,6 +71,11 @@ public class CheatActivity extends AppCompatActivity {
 
             }
         });
+
+        TextView mApiLevelTextView = (TextView) findViewById(R.id.api_version_text_view);
+        if (mApiLevelTextView != null) {
+            mApiLevelTextView.setText(getString(R.string.api_level) + String.valueOf(android.os.Build.VERSION.SDK_INT));
+        }
     }
 
     private void setAnswerShownResult(boolean isAnswerShown) {
